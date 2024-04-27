@@ -12,8 +12,8 @@ def generate_rtcm_type_1005_payload():
     z = int(5000000.00 * 10000)
 
     # Pack data into bytes
-    # Note: Adjust the format string as per the actual bit lengths and order
-    payload = struct.pack('>HBBBIIIBIIBII', 0xD300, station_id, itrf_year, flags, x, 0, y, 0, z, 0)
+    # Adjust the format string to match the actual data provided
+    payload = struct.pack('>HBBBIII', 0xD300, station_id, itrf_year, flags, x, y, z)
     return payload
 
 def send_message_via_lora(serial_port, message):
