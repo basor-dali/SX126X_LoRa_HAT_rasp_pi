@@ -12,9 +12,10 @@ def generate_rtcm_type_1005_payload():
     z = int(5000000.00 * 10000)
 
     # Pack data into bytes
-    # Adjust the format string to match the actual data provided
-    payload = struct.pack('>HBBBIII', 0xD300, station_id, itrf_year, flags, x, y, z)
+    # Ensure the format string and the data provided match
+    payload = struct.pack('>HBBBIIIBIIBII', 0xD300, station_id, itrf_year, flags, x, 0, y, 0, z, 0, 0, 0, 0)
     return payload
+
 
 def send_message_via_lora(serial_port, message):
     """Send a message via LoRa using the specified serial port."""
