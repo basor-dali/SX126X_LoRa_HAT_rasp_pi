@@ -1,0 +1,12 @@
+[Unit]
+Description=LoRa Transmit Service
+After=multi-user.target
+
+[Service]
+Type=simple
+User=pi
+ExecStart=/usr/bin/python3 /home/pi/transmit.py
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
