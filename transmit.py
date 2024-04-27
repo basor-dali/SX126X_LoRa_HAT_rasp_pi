@@ -11,9 +11,12 @@ def generate_rtcm_type_1005_payload():
     y = int(1400891.95 * 10000)
     z = int(5000000.00 * 10000)
 
-    # Pack data into bytes
-    # Ensure the format string and the data provided match
-    payload = struct.pack('>HBBBIIIBIIBII', 0xD300, station_id, itrf_year, flags, x, 0, y, 0, z, 0, 0, 0, 0)
+    # Assuming station_id needs to be split into two bytes
+    station_id_high = (station_id >> 8) & 0xFF  # High byte
+    station_id_low = station_id & 0xFF          # Low byte
+    
+    # Adjust the format string accordingly
+    payload = struct.pack('>HBBBBIIIBIIBII', 0xD300, station_id_high, station_id_low, itrf_year, flags, x, 0, y, 0, z, 0, 0, 0, 0)
     return payload
 
 
