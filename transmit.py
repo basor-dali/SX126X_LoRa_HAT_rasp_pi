@@ -1,42 +1,24 @@
 import serial
-import struct
 import time
-
-def generate_rtcm_type_1005_payload():
-    # Example data for RTCM Type 1005 message
-    station_id = 1234
-    itrf_year = 13  # Last two digits
-    flags = 0b1011  # GPS, Galileo active, Reference Station Indicator active
-    x = int(3650728.49 * 10000)
-    y = int(1400891.95 * 10000)
-    z = int(5000000.00 * 10000)
-
-    # Assuming station_id needs to be split into two bytes
-    station_id_high = (station_id >> 8) & 0xFF  # High byte
-    station_id_low = station_id & 0xFF          # Low byte
-    
-    # Adjust the format string accordingly
-    payload = struct.pack('>HBBBBIIIBIIBII', 0xD300, station_id_high, station_id_low, itrf_year, flags, x, 0, y, 0, z, 0, 0, 0, 0)
-    return payload
-
 
 def send_message_via_lora(serial_port, message):
     """Send a message via LoRa using the specified serial port."""
     serial_port.write(message)
-    print("Message sent via LoRa:", ' '.join(f'{byte:02X}' for byte in message))
+    print("Message sent via LoRa:", message.hex())
 
 def main():
     # Setup the serial connection to LoRa module
     lora_serial = serial.Serial(port='/dev/ttyS0', baudrate=9600, parity=serial.PARITY_NONE,
                                 stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=1)
 
+    # Hardcoded payload for RTCM Type 1005 message
+    # This is a simplified example and may not represent actual valid RTCM data
+    hardcoded_payload = bytes.fromhex('D300040E0001234C00000001567800000002ABCD0000')
+
     try:
         while True:
-            # Generate RTCM Type 1005 payload
-            rtcm_payload = generate_rtcm_type_1005_payload()
-
-            # Send the payload via LoRa
-            send_message_via_lora(lora_serial, rtcm_payload)
+            # Send the hardcoded payload via LoRa
+            send_message_via_lora(lora_serial, hardcoded_payload)
 
             # Wait for 0.2 seconds before sending the next message
             time.sleep(0.2)
@@ -48,5 +30,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
