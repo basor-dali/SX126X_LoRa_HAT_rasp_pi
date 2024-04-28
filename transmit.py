@@ -3,8 +3,10 @@ import time
 
 def send_message_via_lora(serial_port, message):
     """Send a message via LoRa using the specified serial port."""
-    serial_port.write(message)
-    print("Message sent via LoRa:", message.hex())
+    # Append a newline character to the message
+    message_with_newline = message + b'\n'
+    serial_port.write(message_with_newline)
+    print("Message sent via LoRa:", message_with_newline.hex())
 
 def main():
     # Setup the serial connection to LoRa module
